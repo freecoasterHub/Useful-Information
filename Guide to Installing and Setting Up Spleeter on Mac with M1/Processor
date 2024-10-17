@@ -1,0 +1,193 @@
+
+# Guide to Installing and Setting Up Spleeter on Mac with M1 Processor
+
+Spleeter is an open-source audio separation tool that allows you to split audio tracks into individual stems (vocals, accompaniment, etc.). This guide will help you install and configure Spleeter on your Mac with an M1/M2 processor.
+
+## Table of Contents
+
+1. Prerequisites
+2. Install Miniforge (Conda)
+3. Create and Activate a Virtual Environment
+4. Install Necessary Packages
+5. Install Homebrew and ffmpeg
+6. Fix pyenv Errors (If Applicable)
+7. Using Spleeter
+8. Tips and Tricks
+9. Troubleshooting
+10. Conclusion
+
+### Prerequisites
+
+- Mac with M1 processor
+- macOS 11.0 (Big Sur) or later
+- Access to Terminal
+- Internet connection
+
+### Install Miniforge (Conda)
+
+Miniforge is a minimalist Conda installer for macOS that is optimized for ARM processors, including M1/M2.
+
+1. **Download Miniforge for macOS ARM64:**
+   Visit the following link and download the latest installer:
+   [Miniforge3-MacOSX-arm64.sh](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh)
+
+2. **Install Miniforge:**
+   Open Terminal and run:
+   ```bash
+   bash Miniforge3-MacOSX-arm64.sh
+
+Follow the installer prompts:
+
+	•	Accept the license terms.
+	•	Install to the default directory ~/miniforge3.
+	•	When prompted to initialize conda, type yes.
+
+	3.	Restart Terminal:
+Close and reopen Terminal to apply the changes.
+
+Create and Activate a Virtual Environment
+
+	1.	Create a new environment with Python 3.8:
+
+conda create -n spleeter-env python=3.8
+
+When prompted with Proceed ([y]/n)?, type y and press Enter.
+
+	2.	Activate the environment:
+
+conda activate spleeter-env
+
+Your Terminal prompt should now look like:
+
+(spleeter-env) workmac@Your-Mac ~ %
+
+
+
+Install Necessary Packages
+
+	1.	Install a compatible version of NumPy:
+
+conda install numpy
+
+This ensures you get a version optimized for your processor.
+
+	2.	Install Spleeter via pip:
+
+pip install spleeter
+
+
+	3.	Install TensorFlow optimized for macOS:
+
+pip install tensorflow-macos
+pip install tensorflow-metal
+
+These packages enable GPU acceleration on your Mac.
+
+	4.	Install additional dependencies:
+
+pip install ffmpeg-python pydub requests
+
+If you need OpenAI Whisper:
+
+pip install openai-whisper
+
+
+	5.	Upgrade pip, setuptools, and wheel:
+
+pip install --upgrade pip setuptools wheel
+
+
+
+Install Homebrew and ffmpeg
+
+ffmpeg is required for audio processing.
+
+	1.	Install Homebrew:
+If you don’t have Homebrew, install it:
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Follow the on-screen instructions.
+
+	2.	Add Homebrew to PATH (if necessary):
+
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
+	3.	Restart Terminal.
+	4.	Install ffmpeg:
+
+brew install ffmpeg
+
+
+	5.	Verify ffmpeg installation:
+
+ffmpeg -version
+
+
+
+Fix pyenv Errors (If Applicable)
+
+If you encounter errors related to pyenv when starting Terminal, follow these steps:
+
+	1.	Open the ~/.zshrc file:
+
+nano ~/.zshrc
+
+
+	2.	Comment out pyenv lines:
+Add # at the beginning of any lines related to pyenv:
+
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init --path)"
+# eval "$(pyenv init -)"
+
+
+	3.	Save and exit the editor:
+	•	Press Ctrl+O, then Enter to save.
+	•	Press Ctrl+X to exit.
+	4.	Restart Terminal.
+
+Using Spleeter
+
+Now you’re ready to use Spleeter to separate audio tracks.
+
+Separate an Audio File into Vocals and Accompaniment:
+
+	1.	Prepare your audio file:
+Place your audio file (e.g., song.mp3) in a convenient directory.
+	2.	Run the separation command:
+
+spleeter separate song.mp3 -p spleeter:2stems -o output
+
+
+
+Tips and Tricks
+
+Handling Files with Spaces and Special Characters:
+
+	•	Always enclose file paths in quotes:
+
+spleeter separate "/path/to/your song.mp3" -p spleeter:2stems -o output
+
+
+	•	Avoid using special characters in file and directory names.
+
+Troubleshooting
+
+Error: FileNotFoundError or File does not exist:
+
+	•	Verify the file path is correct.
+	•	Ensure the file exists and you have read permissions.
+	•	Avoid invisible characters in file names.
+
+Conclusion
+
+You’ve successfully installed and configured Spleeter on your Mac with an M1/M2 processor. Now you can separate audio files into various stems for your projects.
+
+Useful Links:
+
+	•	Spleeter on GitHub
+	•	Spleeter Documentation
